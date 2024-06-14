@@ -1662,6 +1662,8 @@
 ;; requires a .glb model file in custom_assets/jak1/models
 (build-actor "test-actor")
 
+(build-actor "jd_ramp")
+
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code
 ;;;;;;;;;;;;;;;;;;;;;
@@ -2116,6 +2118,7 @@
 )
 
 (goal-src "levels/test-zone/test-zone-obs.gc" "process-drawable")
+(goal-src "levels/village_common/jd_ramp.gc" "process-drawable")
 
 
 (group-list "all-code"

@@ -195,7 +195,7 @@ std::optional<std::string> try_get_project_path_from_path(const std::string& pat
   //     0, pos + 11);  // + 12 to include "/jak-project" in the returned filepath
   fs::path current_path = fs::path(path);
   while (true) {
-    lg::info("Current path in loop - {}", current_path.string());
+    lg::info("Current path in loop FUUUUUCK - {}", current_path.string());
     if (fs::exists(current_path / ".github")) {
       lg::info("Project path found - {}", current_path.string());
       return current_path.string();

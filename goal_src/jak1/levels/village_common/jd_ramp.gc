@@ -8,6 +8,7 @@
    (old-base vector :inline)
    (bob-offset int64)
    (bob-amount float)
+   (placed? symbol)
    )
   (:methods (init-collision! (_type_) none))
   (:state-methods idle)
@@ -27,6 +28,8 @@
   (let ((cshape (new 'process 'collide-shape-moving this (collide-list-enum hit-by-player))))
     (set! (-> cshape dynam) (copy *standard-dynamics* 'process))
     (set! (-> cshape reaction) default-collision-reaction)
+
+    ;; This is weird c magic to make the no-reaction do nothing properly
     (set! (-> cshape no-reaction)
           (the (function collide-shape-moving collide-shape-intersect vector vector none) nothing)
           )
@@ -37,14 +40,38 @@
     ;;   (set-vector! (-> mesh local-sphere) 0.0 0.0 0.0 (meters 4.5))
     ;;   (set-root-prim! cshape mesh)
     ;;   )
-    (let ((sphere (new 'process 'collide-shape-prim-sphere cshape (the uint 0))))
-      (set! (-> sphere prim-core collide-as) (collide-kind enemy))
-      (set! (-> sphere collide-with) (collide-kind target))
-      (set! (-> sphere prim-core action) (collide-action solid))
-      (set! (-> sphere prim-core offense) (collide-offense normal-attack))
-      (set-vector! (-> sphere local-sphere) 0.0 0.0 0.0 (meters 2))
-      (set-root-prim! cshape sphere)
-      )
+
+
+    (let ((cgroup (new 'process 'collide-shape-prim-group cshape (the uint 1) 0)))
+    (set! (-> cgroup prim-core collide-as) (collide-kind ground-object))
+    (set! (-> cgroup collide-with) (collide-kind target))
+    (set! (-> cgroup prim-core action) (collide-action solid rider-plat-sticky))
+    (set! (-> cgroup transform-index) 0)
+    (set-vector! (-> cgroup local-sphere) 0.0 0.0 0.0 (meters 5))
+    (set-root-prim! cshape cgroup)
+
+
+    (let ((mesh (new 'process 'collide-shape-prim-mesh cshape (the uint 0) (the uint 0))))
+        (set! (-> mesh prim-core collide-as) (collide-kind ground-object))
+        (set! (-> mesh collide-with) (collide-kind target))
+        (set! (-> mesh prim-core action) (collide-action solid rider-plat-sticky))
+        (set! (-> mesh prim-core offense) (collide-offense indestructible))
+        (set! (-> mesh transform-index) 0)
+        (set-vector! (-> mesh local-sphere) 0.0 (meters 0) 0.0 (meters 5))
+        (append-prim cgroup mesh)
+  )
+
+    ;;use sphere if dumb
+    ;; (let ((sphere (new 'process 'collide-shape-prim-sphere cshape (the uint 0))))
+    ;;   (set! (-> sphere prim-core collide-as) (collide-kind enemy))
+    ;;   (set! (-> sphere collide-with) (collide-kind target))
+    ;;   (set! (-> sphere prim-core action) (collide-action solid))
+    ;;   (set! (-> sphere prim-core offense) (collide-offense normal-attack))
+    ;;   (set-vector! (-> sphere local-sphere) 0.0 0.0 0.0 (meters 2))
+    ;;   (set-root-prim! cshape sphere)
+    ;;   )
+    )
+
     (set! (-> cshape nav-radius) (* 0.75 (-> cshape root-prim local-sphere w)))
     (backup-collide-with-as cshape)
     (set! (-> this root) cshape)
@@ -52,7 +79,13 @@
   (none)
   )
 
+(defun setup-jd_ramp ((this jd_ramp))
+(set! (-> this placed?) #f)
+
+this)
+
 (defmethod init-from-entity! ((this jd_ramp) (e entity-actor))
+  (setup-jd_ramp this)
   (logior! (-> this mask) (process-mask enemy))
   (init-collision! this)
   (process-drawable-from-entity! this e)
@@ -70,14 +103,16 @@
 
 
 (defbehavior jd_ramp-init-by-other jd_ramp ((pos vector))
+  (setup-jd_ramp self)
+  (set! (-> self placed?) #f)
   (logior! (-> self mask) (process-mask enemy))
   (init-collision! self)
   (initialize-skeleton self *jd_ramp-sg* '())
   (vector-copy! (-> self root trans) pos)
   (quaternion-identity! (-> self root quat))
   (vector-identity! (-> self root scale))
-  (set! (-> self bob-amount) 1024.0)
-  (set! (-> self bob-offset) (+ (the int (-> self root trans x)) (the int (-> self root trans y)) (the int (-> self root trans z))))
+;;   (set! (-> self bob-amount) 1024.0)
+;;   (set! (-> self bob-offset) (+ (the int (-> self root trans x)) (the int (-> self root trans y)) (the int (-> self root trans z))))
   (set-time! (-> self birth-time))
   (vector-copy! (-> self base) (-> self root trans))
   (vector-copy! (-> self old-base) (-> self root trans))
@@ -99,6 +134,50 @@
     )
   :code (behavior ()
     (loop
+
+        (when (not *target*)
+        (suspend)
+        )
+
+ (let* ((gp-1 (new-stack-vector0))
+    (forward-dir (vector-z-quaternion! (new-stack-vector0) (-> *target* control quat)))
+             (forward (vector-float*! (new-stack-vector0) forward-dir (meters 5)))
+
+             )
+
+             (vector-copy! forward (vector+! forward forward (target-pos 0))  )
+
+
+
+    (vector-matrix*! gp-1 (-> *target* control unknown-vector00) (-> *target* control unknown-matrix01))
+    (vector-float*! gp-1 gp-1 0.5)
+    (vector+! gp-1 gp-1 (-> *target* control trans))
+    (set! (-> gp-1 quad) (-> *target* control unknown-vector61 quad))
+    (vector-float*! gp-1 gp-1 0.5)
+    (vector+! gp-1 gp-1 (-> *target* control trans))
+
+
+
+           (when (and (not (-> self placed?))  )
+         (vector-copy! (-> self root trans) forward)
+         (vector-copy! (-> self root rot) (-> *target* root rot))
+        )
+
+(set! (-> *setting-control* default border-mode)  #f)
+
+        (when (cpad-pressed? 0 down)
+        (set! (-> self placed?) #t)
+        (process-spawn jd_ramp (target-pos 0))
+        )
+
+
+    )
+
+
+
+
+
+
     ;;   (quaternion-rotate-y! (-> self root quat) (-> self root quat) (* (degrees 45) (seconds-per-frame)))
     ;;   (let ((bob (-> self bob-amount)))
     ;;     (when (< 0.0 bob)

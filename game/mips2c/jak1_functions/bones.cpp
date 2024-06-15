@@ -821,7 +821,7 @@ u64 execute(void* ctxt) {
   c->daddu(a3, r0, a3);                             // daddu a3, r0, a3
   bc = c->sgpr64(gp) != 0;                          // bne gp, r0, L77
   c->lhu(s4, 2, a3);                                // lhu s4, 2(a3) merc-global-stats.merc.fragments
-  if (bc) {goto block_11;}                          // branch non-likely skip mercneric effects
+  //if (bc) {goto block_11;}                          // branch non-likely skip mercneric effects
 
   // ra is the effect-info
   // t9 is the effect

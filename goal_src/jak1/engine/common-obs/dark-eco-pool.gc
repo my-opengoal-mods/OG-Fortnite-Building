@@ -84,26 +84,27 @@
   )
 
 (defmethod water-vol-method-25 ((this dark-eco-pool))
-  (let ((t9-0 (method-of-type water-anim water-vol-method-25)))
-    (t9-0 this)
-    )
-  (logclear! (-> this flags) (water-flags wt23))
-  (logior! (-> this flags) (water-flags wt24))
-  (set! (-> this attack-event)
-        (the-as symbol ((the-as
-                          (function res-lump symbol symbol float structure (pointer res-tag) pointer object)
-                          (method-of-type res-lump get-property-struct)
-                          )
-                        (-> this entity)
-                        'attack-event
-                        'interp
-                        -1000000000.0
-                        'dark-eco-pool
-                        (the-as (pointer res-tag) #f)
-                        *res-static-buf*
-                        )
-                )
-        )
+  ;; (let ((t9-0 (method-of-type water-anim water-vol-method-25)))
+  ;;   (t9-0 this)
+  ;;   )
+  ;; (logclear! (-> this flags) (water-flags wt23))
+  ;; (logior! (-> this flags) (water-flags wt24))
+  ;; (set! (-> this attack-event)
+  ;;       (the-as symbol ((the-as
+  ;;                         (function res-lump symbol symbol float structure (pointer res-tag) pointer object)
+  ;;                         (method-of-type res-lump get-property-struct)
+  ;;                         )
+  ;;                       (-> this entity)
+  ;;                       'attack-event
+  ;;                       'interp
+  ;;                       -1000000000.0
+  ;;                       'dark-eco-pool
+  ;;                       (the-as (pointer res-tag) #f)
+  ;;                       *res-static-buf*
+  ;;                       )
+  ;;               )
+  ;;       )
+  0
   (none)
   )
 

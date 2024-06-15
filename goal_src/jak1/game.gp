@@ -1663,7 +1663,7 @@
 ;; to also generate a collide-mesh, add :gen-mesh #t
 (build-actor "test-actor" :gen-mesh #t)
 
-;; (build-actor "jd_ramp" :gen-mesh #t)
+(build-actor "jd_ramp" :gen-mesh #t)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Game Engine Code

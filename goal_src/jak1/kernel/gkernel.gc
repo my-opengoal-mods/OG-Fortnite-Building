@@ -2582,7 +2582,7 @@
 
 ;; used if other pools run out of space in debug mode
 (if *debug-segment*
-    (define *debug-dead-pool* (new 'debug 'dead-pool-heap '*debug-dead-pool* 768 (* 1024 1024)))
+    (define *debug-dead-pool* (new 'debug 'dead-pool-heap '*debug-dead-pool* 768 (* (* 1024 1024) 8)))
     )
 
 ;; variable sized actor pool (most actors go here)

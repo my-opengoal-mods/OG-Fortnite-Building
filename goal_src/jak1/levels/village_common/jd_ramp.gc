@@ -121,7 +121,7 @@ this)
   (go-virtual idle)
   )
 
-(activate-big-collide-cache!)
+
 
 (defstate idle (jd_ramp)
   :virtual #t
@@ -141,6 +141,7 @@ this)
         (when (not *target*)
         (suspend)
         )
+
 
  (let* ((gp-1 (new-stack-vector0))
     (forward-dir (vector-z-quaternion! (new-stack-vector0) (-> *target* control quat)))
@@ -164,14 +165,18 @@ this)
            (when (and (not (-> self placed?))  )
          (vector-copy! (-> self root trans) forward)
          (vector-copy! (-> self root rot) (-> *target* root rot))
-        )
 
-(set! (-> *setting-control* default border-mode)  #f)
+         (set! (-> *setting-control* default border-mode)  #f)
 
         (when (cpad-pressed? 0 down)
         (set! (-> self placed?) #t)
         (process-spawn jd_ramp (target-pos 0))
+        (suspend)
         )
+
+        )
+
+
 
 
     )

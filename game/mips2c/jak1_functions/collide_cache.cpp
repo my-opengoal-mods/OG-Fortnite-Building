@@ -1600,7 +1600,7 @@ u64 execute(void* ctxt) {
   c->dsll(a2, a0, 1);                               // dsll a2, a0, 1
   bc = c->sgpr64(a0) == c->sgpr64(a1);              // beq a0, a1, L145
   c->daddu(a0, a2, a0);                             // daddu a0, a2, a0
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   c->dsll(a0, a0, 4);                               // dsll a0, a0, 4
   c->daddu(s4, v1, a0);                             // daddu s4, v1, a0
@@ -1846,7 +1846,7 @@ u64 execute(void* ctxt) {
   c->dsll(a2, a0, 1);                               // dsll a2, a0, 1
   bc = c->sgpr64(a0) == c->sgpr64(a1);              // beq a0, a1, L110
   c->daddu(a0, a2, a0);                             // daddu a0, a2, a0
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   c->dsll(a0, a0, 4);                               // dsll a0, a0, 4
   c->daddu(s4, v1, a0);                             // daddu s4, v1, a0
@@ -2092,7 +2092,7 @@ u64 execute(void* ctxt) {
   c->dsll(a2, a0, 1);                               // dsll a2, a0, 1
   bc = c->sgpr64(a0) == c->sgpr64(a1);              // beq a0, a1, L75
   c->daddu(a0, a2, a0);                             // daddu a0, a2, a0
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   c->dsll(a0, a0, 4);                               // dsll a0, a0, 4
   c->daddu(s4, v1, a0);                             // daddu s4, v1, a0
@@ -2739,7 +2739,7 @@ u64 execute(void* ctxt) {
   c->vmove(DEST::xyzw, vf1, vf0);                   // vmove.xyzw vf1, vf0
   bc = cop1_bc;                                     // bc1t L35
   c->mtc1(f2, s2);                                  // mtc1 f2, s2
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   cop1_bc = c->fprs[f2] < c->fprs[f0];              // c.lt.s f2, f0
   c->vsub(DEST::xyz, vf1, vf4, vf5);                // vsub.xyz vf1, vf4, vf5
@@ -2989,11 +2989,11 @@ u64 execute(void* ctxt) {
   c->daddiu(a0, a0, 1);                             // daddiu a0, a0, 1
   bc = ((s64)c->sgpr64(a1)) <= 0;                   // blez a1, L9
   c->vmula_bc(DEST::xyzw, BC::x, vf4, vf11);        // vmulax.xyzw acc, vf4, vf11
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   bc = c->sgpr64(a0) == c->sgpr64(v1);              // beq a0, v1, L10
   c->vmadda_bc(DEST::xyzw, BC::y, vf4, vf11);       // vmadday.xyzw acc, vf4, vf11
-  if (bc) {goto block_12;}                          // branch non-likely
+  //if (bc) {goto block_12;}                          // branch non-likely
 
   c->vmadda_bc(DEST::xyzw, BC::z, vf4, vf11);       // vmaddaz.xyzw acc, vf4, vf11
   // nop                                            // sll r0, r0, 0
@@ -3003,7 +3003,7 @@ u64 execute(void* ctxt) {
   c->daddiu(a0, a0, 1);                             // daddiu a0, a0, 1
   bc = ((s64)c->sgpr64(a1)) <= 0;                   // blez a1, L9
   c->vmula_bc(DEST::xyzw, BC::x, vf4, vf12);        // vmulax.xyzw acc, vf4, vf12
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   bc = c->sgpr64(a0) == c->sgpr64(v1);              // beq a0, v1, L10
   c->vmadda_bc(DEST::xyzw, BC::y, vf4, vf12);       // vmadday.xyzw acc, vf4, vf12
@@ -3017,7 +3017,7 @@ u64 execute(void* ctxt) {
   c->daddiu(a0, a0, 1);                             // daddiu a0, a0, 1
   bc = ((s64)c->sgpr64(a1)) <= 0;                   // blez a1, L9
   // nop                                            // sll r0, r0, 0
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   bc = c->sgpr64(a0) == c->sgpr64(v1);              // beq a0, v1, L10
   // nop                                            // sll r0, r0, 0
@@ -3027,7 +3027,7 @@ u64 execute(void* ctxt) {
   c->daddiu(a0, a0, 1);                             // daddiu a0, a0, 1
   bc = ((s64)c->sgpr64(a1)) <= 0;                   // blez a1, L9
   // nop                                            // sll r0, r0, 0
-  if (bc) {goto block_11;}                          // branch non-likely
+  //if (bc) {goto block_11;}                          // branch non-likely
 
   bc = c->sgpr64(a0) != c->sgpr64(v1);              // bne a0, v1, L8
   // nop                                            // sll r0, r0, 0

@@ -121,6 +121,8 @@ this)
   (go-virtual idle)
   )
 
+(activate-big-collide-cache!)
+
 (defstate idle (jd_ramp)
   :virtual #t
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
@@ -133,6 +135,7 @@ this)
       )
     )
   :code (behavior ()
+
     (loop
 
         (when (not *target*)

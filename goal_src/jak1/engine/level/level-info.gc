@@ -2003,8 +2003,8 @@
                                              :vis-nick 'none
                                              :lev0 'test-zone
                                              :disp0 'display
-                                             :lev1 'village1
-                                             :disp1 'display
+                                             :lev1 '#f ;;'village1
+                                             :disp1 '#f;;'display
                                              ))
                            :tasks '()
                            :priority 100

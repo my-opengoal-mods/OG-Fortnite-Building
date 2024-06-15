@@ -492,6 +492,28 @@ bool run_build_actor(const std::string& mdl_name,
   main_pose(3, 3) = 1.0f;
   Joint main("main", 2, 1, main_pose);
   joints.emplace_back(main);
+
+  auto main_pose2 = math::Matrix4f::zero();
+  main_pose2(0, 0) = 1.0f;
+  main_pose2(0, 1) = -0.0f;
+  main_pose2(0, 2) = 0.0f;
+  main_pose2(0, 3) = -0.0f;
+  main_pose2(1, 0) = -0.0f;
+  main_pose2(1, 1) = 1.0f;
+  main_pose2(1, 2) = -0.0f;
+  main_pose2(1, 3) = 0.0f;
+  main_pose2(2, 0) = 0.0f;
+  main_pose2(2, 1) = -0.0f;
+  main_pose2(2, 2) = 1.0f;
+  main_pose2(2, 3) = -0.0f;
+  main_pose2(3, 0) = -0.0f;
+  main_pose2(3, 1) = -2194.1628418f;
+  main_pose2(3, 2) = -0.0f;
+  main_pose2(3, 3) = 1.0f;
+  Joint main2("Top Corner", 3, 1, main_pose2);
+  joints.emplace_back(main2);
+
+
   std::vector<CollideMesh> mesh;
   if (gen_collide_mesh) {
     tinygltf::TinyGLTF loader;

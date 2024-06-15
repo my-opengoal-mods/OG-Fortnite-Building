@@ -1,7 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
 
-(deftype jd_ramp (process-drawable)
+
+(deftype jd_piece (process-drawable)
   ((root collide-shape-moving :override)
    (birth-time time-frame)
    (base vector :inline)
@@ -9,9 +10,17 @@
    (bob-offset int64)
    (bob-amount float)
    (placed? symbol)
+   (connect-points vector 4 :inline)
    )
-  (:methods (init-collision! (_type_) none))
+  (:methods (init-collision! (_type_) none)
+            (jd_ramp-debug-draw (_type_) none)
+            (jd_ramp-update (_type_) none))
   (:state-methods idle)
+)
+
+
+(deftype jd_ramp (jd_piece)
+  ()
   )
 
 (def-art-elt jd_ramp-ag jd_ramp-lod0-jg 0)
@@ -81,6 +90,9 @@
 
 (defun setup-jd_ramp ((this jd_ramp))
 (set! (-> this placed?) #f)
+(dotimes (i 3)
+(vector-identity! (-> this connect-points i))
+)
 
 this)
 
@@ -121,17 +133,38 @@ this)
   (go-virtual idle)
   )
 
+(defmethod jd_ramp-debug-draw ((this jd_ramp))
 
+
+ (when (not *display-joint-names*) (set! *display-joint-names* #t))
+  (dotimes (i 4)
+  (add-debug-sphere #t (bucket-id debug) (-> this connect-points i) (meters 1.0) (static-rgba 0 #xff 0 #x40))
+  ;; (inspect (-> this connect-points i))
+  )
+  (none)
+  )
+
+(defmethod jd_ramp-update ((this jd_ramp))
+;;This funciton updates things that need to be changed every frame in the idle state while its not placed.
+(when (not (-> this placed?))
+  (dotimes (i 4)
+  (vector-copy! (-> this connect-points i) (-> this root trans))
+  ;; (inspect (-> this connect-points i))
+  )
+)
+
+(none)
+)
 
 (defstate idle (jd_ramp)
   :virtual #t
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
     (case message
-      (('attack 'touch)
-    ;;    (if (= (-> proc type) target)
-    ;;      (send-event proc 'attack #f (static-attack-info ((shove-up (meters 2.5)) (shove-back (meters 7.5)))))
-    ;;      )
-       )
+    ;;   (('attack 'touch)
+    ;; ;;    (if (= (-> proc type) target)
+    ;; ;;      (send-event proc 'attack #f (static-attack-info ((shove-up (meters 2.5)) (shove-back (meters 7.5)))))
+    ;; ;;      )
+    ;;    )
       )
     )
   :code (behavior ()
@@ -142,6 +175,8 @@ this)
         (suspend)
         )
 
+(jd_ramp-update self)
+(jd_ramp-debug-draw self)
 
  (let* ((gp-1 (new-stack-vector0))
     (forward-dir (vector-z-quaternion! (new-stack-vector0) (-> *target* control quat)))
@@ -168,7 +203,7 @@ this)
 
          (set! (-> *setting-control* default border-mode)  #f)
 
-        (when (cpad-pressed? 0 down)
+        (when (cpad-pressed? 0 r1)
         (set! (-> self placed?) #t)
         (process-spawn jd_ramp (target-pos 0))
         (suspend)

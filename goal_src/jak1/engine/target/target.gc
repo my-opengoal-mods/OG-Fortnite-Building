@@ -602,7 +602,8 @@
                                        )
                                (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2)
                                )
-                       (pad-buttons l1 r1)
+                               ;;Change so you dont roll while building
+                       (pad-buttons l1)
                        )
              (and (time-elapsed? (-> *TARGET-bank* wheel-timeout) (-> self control unknown-dword30))
                   (and (!= (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) stick0-speed) 0.0) (can-wheel?))
